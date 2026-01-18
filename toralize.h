@@ -3,13 +3,14 @@
 #include <string.h>
 #include <unistd.h>
 
-
 #ifdef _WIN32
 #include <winsock2.h>
 #include <ws2tcpip.h>
+#include <windows.h>
 #pragma comment(lib, "ws2_32.lib")
 #define close(s) closesocket(s)
 #else
+#include <dlfcn.h>
 #include <unistd.h>
 #include <sys/socket.h>
 #include <arpa/inet.h>
@@ -96,5 +97,5 @@ struct proxy_response {
 #pragma pack(pop)
 typedef struct proxy_response Res;
 
-Req *request(const char*, const int);
-int main(int,char**);
+Req *request(struct sockaddr_in*);
+int connect(int, const struct sockaddr*, socklen_t);
